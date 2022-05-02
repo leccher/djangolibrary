@@ -1,2 +1,2 @@
 # djangolibrary
-A django project for managing loaning of my books
+A django project for manage loaning of my books
