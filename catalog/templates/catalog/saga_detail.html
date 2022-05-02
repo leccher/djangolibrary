@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>{{ object.title }}</h2>
+  <p><strong>Author:</strong>{{ object.author.first_name }} {% if object.author.middle_name %}{{ object.author.middle_name }}{% endif %} {{ object.author.last_name }}</p>
+  {% if user.is_authenticated %}
+  <p><a href="{% url 'saga-update' object.pk %}">Edit</a> <a href="{% url 'saga-delete' object.pk %}">Delete</a></p>
+  <p><a href="{% url 'add-book-to-saga' object.pk %}">Add book</a>
+  {% endif %}
+  {% if object.book_set.all %}
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Books</h4>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Subtitle</th>
+                <th>ISBN</th>
+            </tr>
+        </thead>
+        <tr>
+            <th></th>
+        </tr>    
+    {% for obj in object.book_set.all %}
+        <tr>
+            <td><strong><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></strong></td>
+            <td>{{obj.subtitle}}</td>
+            <td><a href="https://isbnsearch.org/isbn/{{obj.isbn}}" target="_blank">{{obj.isbn}}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

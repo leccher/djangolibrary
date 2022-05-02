@@ -1,0 +1,39 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ object.first_name }} {% if object.middle_name %}{{ object.middle_name }}{% endif %} {{ object.last_name }}</h1>
+  <p><strong>Born:</strong> {{ object.date_of_birth }}</p>
+  {% if object.date_of_death %}
+    <p><strong>Dead:</strong> {{ object.date_of_death }}</p>
+  {% endif %}
+  <p><strong>Summary:</strong> {{ object.summary }}</p>
+  {% if user.is_authenticated %}
+  <p><a href="{% url 'author-update' object.pk %}">Edit</a></p>
+  <p><a href="{% url 'add-book-to-author' object.pk %}">Add book</a>
+  {% endif %}
+  {% if object.book_set.all %}
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Books</h4>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Subtitle</th>
+                <th>ISBN</th>
+            </tr>
+        </thead>
+        <tr>
+            <th></th>
+        </tr>    
+    {% for obj in object.book_set.all %}
+        <tr>
+            <td><strong><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></strong></td>
+            <td>{{obj.subtitle}}</td>
+            <td><a href="https://isbnsearch.org/isbn/{{obj.isbn}}" target="_blank">{{obj.isbn}}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

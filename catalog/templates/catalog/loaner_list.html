@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Loaner List</h1>
+  {% if user.is_authenticated %}
+  <p>Would you like to create a new one inside? <a href="{% url 'loaner-create'%}">Create</a></p>
+  {% endif %}
+  {% if object_list %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></td>
+        <td>{{ object.phone }}</td>
+        <td>{{ object.description }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>There are no loaners inside.</p>
+  {% endif %}
+{% endblock %}

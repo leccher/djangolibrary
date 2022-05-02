@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  {% if book.id %}
+  <h2>Modifica: {{ book }}</h2>
+  {% else %}
+  <h2>Nuovo libro</h2>
+  {% endif %}
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <a href="{% url 'books' %}">Back to list</a> <input type="submit" value="Submit">
+  </form>
+{% endblock %}

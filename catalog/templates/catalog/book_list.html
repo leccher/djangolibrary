@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Book List</h1>
+  {% if user.is_authenticated %}
+  <p>Would you like to create a new one inside? <a href="{% url 'book-create'%}">Create</a></p>
+  {% endif %}
+  {% if book_list %}
+  <ul>
+    {% for book in book_list %}
+      <li>
+        <a href="{{ book.get_absolute_url }}">
+          {% if book.saga %}
+          {{ book.saga }} - 
+          {% endif %}
+          {{ book.title }}
+        </a> ({{book.author}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}
+{% endblock %}

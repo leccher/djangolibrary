@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Author List</h1>
+  
+  {% if user.is_authenticated %}
+  <p>Would you like to create a new one inside? <a href="{% url 'author-create'%}">Create</a></p>
+  {% endif %}
+  {% if object_list %}
+  <ul>
+    {% for object in object_list %}
+      <li>
+        <a href="{{ object.get_absolute_url }}">{{ object.first_name }} {% if object.middle_name %}{{ object.middle_name }}{% endif %} {{ object.last_name }}</a> ({{object.date_of_birth}} - {% if object.date_of_death %}{{object.date_of_death}}{% endif %})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no authors in the library.</p>
+  {% endif %}
+{% endblock %}

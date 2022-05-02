@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Sagas List</h1>
+  {% if user.is_authenticated %}
+  <p>Would you like to create a new one inside? <a href="{% url 'saga-create'%}">Create</a></p>
+  {% endif %}
+  {% if object_list %}
+  <ul>
+    {% for object in object_list %}
+      <li>
+        <a href="{% url 'saga-detail' object.pk %}">{{ object.title }}</a> <a href="{% url 'saga-update' object.pk %}">Edit</a> <a href="{% url 'saga-delete' object.pk %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no sagas inside.</p>
+  {% endif %}
+{% endblock %}

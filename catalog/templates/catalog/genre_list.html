@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Genre List</h1>
+  {% if user.is_authenticated %}
+  <p>Would you like to create a new one inside? <a href="{% url 'genre-create'%}">Create</a></p>
+  {% endif %}
+  {% if object_list %}
+  <ul>
+    {% for object in object_list %}
+      <li>
+        {{ object.name }} <a href="{% url 'genre-delete' object.pk %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no genres.</p>
+  {% endif %} 
+{% endblock %}

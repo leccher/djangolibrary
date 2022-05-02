@@ -1,0 +1,52 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>{{ object.title }}</h2>
+  {% if object.subtitle %}
+  <h3>{{ object.subtitle }}</h3>
+  {% endif %}
+  <p>
+    {% if object.saga %}
+    <strong>Saga:</strong> <a href="{% url 'saga-detail' object.saga.pk %}">{{ object.saga }}</a>
+    {% endif %}
+    <strong>Author:</strong> <a href="{% url 'author-detail' object.author.pk %}">{{ object.author }}</a>
+    {% if object.publisher %}
+    <strong>Publisher:</strong> <a href="{% url 'publisher-detail' object.publisher.pk %}">{{ object.publisher }}</a>
+    {% endif %}
+    {% if object.series %}
+    <strong>Series:</strong> <a href="{% url 'series-detail' object.series.pk %}">{{ object.series }}</a>
+    {% endif %}
+  </p>
+  {% if object.coauthor %}
+    <p><strong>Co-Author:</strong> {{ object.coauthor }}</p>
+  {% endif %}
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'book-update' object.pk %}">Edit</a> <a href="{% url 'book-delete' object.pk %}">Delete</a> <a href="{% url 'book-duplicate' object.pk %}">Duplicate</a></p>
+    <p><a href="{% url 'book-loan' object.pk %}">Loan</a></p>
+  {% endif %}
+  {% if object.summary %}
+  <p><strong>Summary:</strong> {{ object.summary }}</p>
+  {% endif %}
+  {% if object.isbn %}
+  <p><strong>ISBN:</strong> <a href="https://isbnsearch.org/isbn/{{ object.isbn }}">{{ object.isbn }}</a></p>
+  {% endif %}
+  {% if object.ean %}
+  <p><strong>EAN:</strong> <a href="https://www.ean-search.org/?q={{ object.ean }}">{{ object.ean }}</a>
+  {% endif %}
+  <p><strong>Language:</strong> {{ object.language }}</p>
+  <p><strong>Genres:</strong> {% for genres in object.genres.all %} {{ genres }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+  {% if object.loan_set.all %}
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Loans</h4>
+    {% for obj in object.loan_set.all %}
+      <hr>
+      <p class="{% if obj.status == 'a' %}text-success{% elif obj.status == 'm' %}text-danger{% else %}text-warning{% endif %}">{{ obj.get_status_display }}</p>
+      {% if obj.status != 'a' %}
+        <p><strong>Date of loan:</strong> {{obj.loan_date}}</p>
+        <p><strong>Loaner:</strong> {{obj.loaner}}</p>
+      {% endif %}
+      <p class="text-muted"><strong>Id:</strong> {{obj.id}}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endblock %}
